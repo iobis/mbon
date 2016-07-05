@@ -1,0 +1,229 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Networks</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Funding</th>
+                <th>Ongoing</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="network in networks">
+                <td>{{ network.id }}</td>
+                <td>{{ network.name }}</td>
+                <td>{{ network.funding }}</td>
+                <td>{{ network.ongoing }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deletenetwork(network.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="savenetwork()">
+            <input ng-model="network.name" type="text" class="form-control" id="networkname" placeholder="Name">
+            <input ng-model="network.funding" type="text" class="form-control" id="networkfunding" placeholder="Funding">
+            <div class="checkbox">
+                <label><input type="checkbox" ng-model="network.ongoing"> Ongoing</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <h2>Questions</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Question</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="question in questions">
+                <td>{{ question.id }}</td>
+                <td>{{ question.name }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deletequestion(question.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="savequestion()">
+            <input ng-model="question.name" type="text" class="form-control" id="questionname" placeholder="Name">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <h2>EOVs</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Parent</th>
+                <th>Questions</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="eov in eovs">
+                <td>{{ eov.id }}</td>
+                <td>{{ eov.name }}</td>
+                <td>{{ eov.parent.name }}</td>
+                <td>
+                    <span ng-repeat="question in eov.questions">{{ question.name }}<br/></span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deleteeov(eov.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-horizontal" ng-submit="saveeov()">
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="eovname">Name</label>
+                <div class="col-md-4">
+                    <input ng-model="eov.name" type="text" class="form-control" id="eovname" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="eovparent">Parent</label>
+                <div class="col-md-4">
+                    <select class="form-control" ng-model="eov.parent" id="eovparent" ng-options="parent as parent.name for parent in parents track by parent.id">
+                        <option value="">(Select parent)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Questions</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="temp.question" ng-options="question as question.name for question in questions track by question.id">
+                            <option value="">(Select question)</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" ng-click="addquestion()">Add</button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>
+                            <span ng-repeat="question in eov.questions track by question.id"><br/>{{ question.name }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2"></label>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+
+        <h2>Activities</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Network</th>
+                <th>EOV</th>
+                <th>Coverage (bounding box)</th>
+                <th>Duration</th>
+                <th>Time scale</th>
+                <th>Tools</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="activity in activities">
+                <td>{{ activity.id }}</td>
+                <td>{{ activity.network.name }}</td>
+                <td>{{ activity.eov.name }}</td>
+                <td>{{ activity.coverage }}</td>
+                <td>{{ activity.duration }}</td>
+                <td>{{ activity.timescale }}</td>
+                <td class="nowrap">
+                    <span ng-repeat="tool in activity.tools">{{ tool.name }}<br/></span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deleteactivity(activity.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-horizontal" ng-submit="saveactivity()">
+            <div class="form-group">
+                <label class="control-label col-md-2" for="activitycoverage">Coverage</label>
+                <div class="col-md-4">
+                    <input ng-model="activity.coverage" type="text" class="form-control" id="activitycoverage" placeholder="Coverage">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="activityduration">Duration</label>
+                <div class="col-md-4">
+                    <input ng-model="activity.duration" type="text" class="form-control" id="activityduration" placeholder="Duration">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="activitytimescale">Time scale</label>
+                <div class="col-md-4">
+                    <input ng-model="activity.timescale" type="text" class="form-control" id="activitytimescale" placeholder="Time scale">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="activitynetwork">Network</label>
+                <div class="col-md-4">
+                    <select class="form-control" id="activitynetwork" ng-model="activity.network" ng-options="network as network.name for network in networks track by network.id">
+                        <option value="">(Select network)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="activityeov">EOV</label>
+                <div class="col-md-4">
+                    <select class="form-control" id="activityeov" ng-model="activity.eov" ng-options="eov as eov.name for eov in eovs track by eov.id">
+                        <option value="">(Select EOV)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Tools</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="temp.tool" ng-options="tool as tool.name for tool in tools track by tool.id">
+                            <option value="">(Select tool)</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" ng-click="addtool()">Add</button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>
+                            <span ng-repeat="tool in activity.tools track by tool.id"><br/>{{ tool.name }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2"></label>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </div>
+</div>

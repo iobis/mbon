@@ -1,0 +1,55 @@
+﻿delete from goos.eov;
+delete from goos.parent;
+delete from goos.tool;
+
+insert into goos.parent (id, name) values (1, 'Microbes');
+insert into goos.parent (id, name) values (2, 'Zooplankton');
+insert into goos.parent (id, name) values (3, 'Bony fishes');
+insert into goos.parent (id, name) values (4, 'Cartilaginous fishes');
+insert into goos.parent (id, name) values (5, 'Coral');
+insert into goos.parent (id, name) values (6, 'Submerged vegetation');
+insert into goos.parent (id, name) values (7, 'Benthic invertebrates');
+insert into goos.parent (id, name) values (8, 'Marine mammals');
+insert into goos.parent (id, name) values (9, 'Seabirds');
+insert into goos.parent (id, name) values (10, 'Pigments');
+insert into goos.parent (id, name) values (11, 'Phytoplankton');
+insert into goos.parent (id, name) values (12, 'Invertebrate nekton');
+insert into goos.parent (id, name) values (13, 'Tuna');
+insert into goos.parent (id, name) values (14, 'Billfish');
+insert into goos.parent (id, name) values (15, 'Turtles');
+
+insert into goos.eov (name, parent_id) values ('Zooplankton: species abundance or biomass', 2);
+insert into goos.eov (name, parent_id) values ('Zooplankton: functional groups', 2);
+insert into goos.eov (name, parent_id) values ('Zooplankton: vertical distribution', 2);
+insert into goos.eov (name, parent_id) values ('Zooplankton: horizontal distribution', 2);
+insert into goos.eov (name, parent_id) values ('Zooplankton: productivity', 2);
+insert into goos.eov (name, parent_id) values ('Phytoplankton: species abundance or biomass', 11);
+insert into goos.eov (name, parent_id) values ('Phytoplankton: functional groups', 11);
+insert into goos.eov (name, parent_id) values ('Phytoplankton: vertical distribution', 11);
+insert into goos.eov (name, parent_id) values ('Phytoplankton: horizontal distribution', 11);
+insert into goos.eov (name, parent_id) values ('Phytoplankton: productivity', 11);
+
+insert into goos.tool (name) values ('Remote sensing');
+insert into goos.tool (name) values ('Buoys');
+insert into goos.tool (name) values ('Moorings');
+insert into goos.tool (name) values ('Floats');
+insert into goos.tool (name) values ('Gliders');
+insert into goos.tool (name) values ('AUV');
+insert into goos.tool (name) values ('ROV');
+insert into goos.tool (name) values ('BRUV');
+insert into goos.tool (name) values ('Telemetry');
+insert into goos.tool (name) values ('Hydrophones');
+insert into goos.tool (name) values ('Ship surveys');
+insert into goos.tool (name) values ('Ships of opportunity');
+insert into goos.tool (name) values ('Aerial surveys');
+insert into goos.tool (name) values ('Tow');
+insert into goos.tool (name) values ('Divers');
+insert into goos.tool (name) values ('Satellites');
+insert into goos.tool (name) values ('Net');
+insert into goos.tool (name) values ('Bottle');
+insert into goos.tool (name) values ('Photo');
+insert into goos.tool (name) values ('Video');
+insert into goos.tool (name) values ('Active acoustics');
+insert into goos.tool (name) values ('Passive acoustics');
+insert into goos.tool (name) values ('Cores');
+

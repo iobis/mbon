@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Sample output</h2>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="question" ng-options="question as question.name for question in questions track by question.id" ng-change="getoutput()">
+                            <option value="">(Select question)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <h4>EOVs</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="eov in output.eovs">
+                <td>{{ eov.id }}</td>
+                <td>{{ eov.name }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4>Activities</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Network</th>
+                <th>Coverage (bounding box)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="activity in output.activities">
+                <td>{{ activity.id }}</td>
+                <td>{{ activity.network }}</td>
+                <td>{{ activity.coverage }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4>Networks</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="network in output.networks">
+                <td>{{ network.id }}</td>
+                <td>{{ network.name }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4>Tools</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="tool in output.tools">
+                <td>{{ tool.id }}</td>
+                <td>{{ tool.name }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

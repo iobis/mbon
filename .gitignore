@@ -1,0 +1,8 @@
+documents
+**/.DS_Store
+**/*.iml
+**/target
+**/application-prod.properties
+**/.idea
+**/.mvn
+**/mvnw*
