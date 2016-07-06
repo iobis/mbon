@@ -3,7 +3,7 @@
 <head><title>MBON</title>
 <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
-<!--<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">-->
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <style>
 body {
@@ -20,6 +20,21 @@ body {
 .link {
     stroke: #999;
     stroke-opacity: .6;
+}
+.graphlabel {
+    font-size: 0.8em;
+}
+#graph {
+    height: 400px;
+    width: 100%;
+    background-color: #fafafa;
+}
+d3-tip {
+    font-size: 0.8em;
+}
+.legendOrdinal .label {
+    font-size: 0.8em;
+    font-weight: normal;
 }
 </style>
 <body>
@@ -60,6 +75,8 @@ body {
 <script src="bower_components/leaflet/dist/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.10.0/d3-legend.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

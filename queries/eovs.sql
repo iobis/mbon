@@ -19,6 +19,15 @@ from (
 				left join goos.question on question.id = eov_question.question_id
 				where eov_question.eov_id = eov.id
 			) t
-		) as questions
+		) as questions,
+		(
+			select array_to_json(array_agg(row_to_json(t)))
+			from (
+				select requirement.id, requirement.name, requirement.type
+				from goos.requirement_eov
+				left join goos.requirement on requirement.id = requirement_eov.requirement_id
+				where requirement_eov.eov_id = eov.id
+			) t
+		) as requirements
 	from goos.eov
 ) a;

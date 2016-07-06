@@ -60,6 +60,117 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
+        <h2>Requirements</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Requirement</th>
+                <th>Type</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="requirement in requirements">
+                <td>{{ requirement.id }}</td>
+                <td>{{ requirement.name }}</td>
+                <td>{{ requirement.type }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deleterequirement(requirement.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="saverequirement()">
+            <input ng-model="requirement.name" type="text" class="form-control" id="requirementname" placeholder="Requirement">
+            <select class="form-control" ng-model="requirement.type">
+                <option value="">(Select type)</option>
+                <option value="driver">Driver</option>
+                <option value="pressure">Pressure</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <h2>Tools</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="tool in tools">
+                <td>{{ tool.id }}</td>
+                <td>{{ tool.name }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deletetool(tool.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="savetool()">
+            <input ng-model="tool.name" type="text" class="form-control" id="toolname" placeholder="Name">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <h2>Data products</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="dataproduct in dataproducts">
+                <td>{{ dataproduct.id }}</td>
+                <td>{{ dataproduct.name }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deletedataproduct(dataproduct.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="savedataproduct()">
+            <input ng-model="dataproduct.name" type="text" class="form-control" id="productname" placeholder="Name">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <h2>Data systems</h2>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="datasystem in datasystems">
+                <td>{{ datasystem.id }}</td>
+                <td>{{ datasystem.name }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="deletedatasystem(datasystem.id)">delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="savedatasystem()">
+            <input ng-model="datasystem.name" type="text" class="form-control" id="systemname" placeholder="Name">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
         <h2>EOVs</h2>
 
         <table class="table table-condensed table-striped">
@@ -69,6 +180,7 @@
                 <th>Name</th>
                 <th>Parent</th>
                 <th>Questions</th>
+                <th>Requirements</th>
                 <th></th>
             </tr>
             </thead>
@@ -79,6 +191,9 @@
                 <td>{{ eov.parent.name }}</td>
                 <td>
                     <span ng-repeat="question in eov.questions">{{ question.name }}<br/></span>
+                </td>
+                <td>
+                    <span ng-repeat="requirement in eov.requirements">{{ requirement.name }}<br/></span>
                 </td>
                 <td>
                     <button type="button" class="btn btn-warning btn-xs" ng-click="deleteeov(eov.id)">delete</button>
@@ -122,6 +237,24 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-md-2">Requirements</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="temp.requirement" ng-options="requirement as requirement.name for requirement in requirements track by requirement.id">
+                            <option value="">(Select requirement)</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" ng-click="addrequirement()">Add</button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>
+                            <span ng-repeat="requirement in eov.requirements track by requirement.id"><br/>{{ requirement.name }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-md-2"></label>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -141,6 +274,8 @@
                 <th>Duration</th>
                 <th>Time scale</th>
                 <th>Tools</th>
+                <th>Data products</th>
+                <th>Data systems</th>
                 <th></th>
             </tr>
             </thead>
@@ -154,6 +289,12 @@
                 <td>{{ activity.timescale }}</td>
                 <td class="nowrap">
                     <span ng-repeat="tool in activity.tools">{{ tool.name }}<br/></span>
+                </td>
+                <td class="nowrap">
+                    <span ng-repeat="dataproduct in activity.dataproducts">{{ dataproduct.name }}<br/></span>
+                </td>
+                <td class="nowrap">
+                    <span ng-repeat="datasystem in activity.datasystems">{{ datasystem.name }}<br/></span>
                 </td>
                 <td>
                     <button type="button" class="btn btn-warning btn-xs" ng-click="deleteactivity(activity.id)">delete</button>
@@ -211,6 +352,42 @@
                     <div>
                         <p>
                             <span ng-repeat="tool in activity.tools track by tool.id"><br/>{{ tool.name }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Data products</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="temp.dataproduct" ng-options="dataproduct as dataproduct.name for dataproduct in dataproducts track by dataproduct.id">
+                            <option value="">(Select data product)</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" ng-click="adddataproduct()">Add</button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>
+                            <span ng-repeat="dataproduct in activity.dataproducts track by dataproduct.id"><br/>{{ dataproduct.name }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Data systems</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="temp.datasystem" ng-options="datasystem as datasystem.name for datasystem in datasystems track by datasystem.id">
+                            <option value="">(Select data system)</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" ng-click="adddatasystem()">Add</button>
+                        </span>
+                    </div>
+                    <div>
+                        <p>
+                            <span ng-repeat="datasystem in activity.datasystems track by datasystem.id"><br/>{{ datasystem.name }}</span>
                         </p>
                     </div>
                 </div>

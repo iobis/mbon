@@ -28,6 +28,11 @@ public class MbonController {
         return mbonService.questions();
     }
 
+    @RequestMapping(value = "/requirement", method = RequestMethod.GET)
+    public Object requirements() {
+        return mbonService.requirements();
+    }
+
     @RequestMapping(value = "/parent", method = RequestMethod.GET)
     public Object parents() {
         return mbonService.parents();
@@ -36,6 +41,16 @@ public class MbonController {
     @RequestMapping(value = "/tool", method = RequestMethod.GET)
     public Object tools() {
         return mbonService.tools();
+    }
+
+    @RequestMapping(value = "/dataproduct", method = RequestMethod.GET)
+    public Object dataproducts() {
+        return mbonService.dataproducts();
+    }
+
+    @RequestMapping(value = "/datasystem", method = RequestMethod.GET)
+    public Object datasystems() {
+        return mbonService.datasystems();
     }
 
     @RequestMapping(value = "/geojson", method = RequestMethod.GET)
@@ -73,6 +88,26 @@ public class MbonController {
         mbonService.deleteQuestion(id);
     }
 
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
+    public void deleteRequirement(@PathVariable(value = "id") Integer id) {
+        mbonService.deleteRequirement(id);
+    }
+
+    @RequestMapping(value = "/dataproduct/{id}", method = RequestMethod.DELETE)
+    public void deleteDataproduct(@PathVariable(value = "id") Integer id) {
+        mbonService.deleteDataproduct(id);
+    }
+
+    @RequestMapping(value = "/datasystem/{id}", method = RequestMethod.DELETE)
+    public void deleteDatasystem(@PathVariable(value = "id") Integer id) {
+        mbonService.deleteDatasystem(id);
+    }
+
+    @RequestMapping(value = "/tool/{id}", method = RequestMethod.DELETE)
+    public void deleteTool(@PathVariable(value = "id") Integer id) {
+        mbonService.deleteTool(id);
+    }
+
     @RequestMapping(value = "/output/{id}", method = RequestMethod.GET)
     public Object output(@PathVariable(value = "id") Integer id) {
         return mbonService.output(id);
@@ -97,6 +132,34 @@ public class MbonController {
         JSONObject question = new JSONObject(json);
         logger.info(question);
         mbonService.saveQuestion(question);
+    }
+
+    @RequestMapping(value = "/requirement", method = RequestMethod.POST)
+    public void saveRequirement(@RequestBody String json) {
+        JSONObject requirement = new JSONObject(json);
+        logger.info(requirement);
+        mbonService.saveRequirement(requirement);
+    }
+
+    @RequestMapping(value = "/tool", method = RequestMethod.POST)
+    public void saveTool(@RequestBody String json) {
+        JSONObject tool = new JSONObject(json);
+        logger.info(tool);
+        mbonService.saveTool(tool);
+    }
+
+    @RequestMapping(value = "/dataproduct", method = RequestMethod.POST)
+    public void saveDataproduct(@RequestBody String json) {
+        JSONObject dataproduct = new JSONObject(json);
+        logger.info(dataproduct);
+        mbonService.saveDataproduct(dataproduct);
+    }
+
+    @RequestMapping(value = "/datasystem", method = RequestMethod.POST)
+    public void saveDatasystem(@RequestBody String json) {
+        JSONObject datasystem = new JSONObject(json);
+        logger.info(datasystem);
+        mbonService.saveDatasystem(datasystem);
     }
 
     @RequestMapping(value = "/eov", method = RequestMethod.POST)

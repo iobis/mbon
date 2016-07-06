@@ -26,11 +26,18 @@ app.controller("mboncontroller", function($scope, $http) {
 
     $scope.network = {};
     $scope.eov = {
-        questions: []
+        questions: [],
+        requirements: []
     };
     $scope.question = {};
+    $scope.requirement = {};
+    $scope.tool = {};
+    $scope.dataproduct = {};
+    $scope.datasystem = {};
     $scope.activity = {
-        tools: []
+        tools: [],
+        dataproducts: [],
+        datasystems: []
     };
     $scope.temp = {};
 
@@ -43,6 +50,30 @@ app.controller("mboncontroller", function($scope, $http) {
     $scope.savequestion = function() {
         $http.post("question", $scope.question).then(function() {
             updatequestions();
+        });
+    };
+
+    $scope.saverequirement = function() {
+        $http.post("requirement", $scope.requirement).then(function() {
+            updaterequirements();
+        });
+    };
+
+    $scope.savetool = function() {
+        $http.post("tool", $scope.tool).then(function() {
+            updatetools();
+        });
+    };
+
+    $scope.savedataproduct = function() {
+        $http.post("dataproduct", $scope.dataproduct).then(function() {
+            updatedataproducts();
+        });
+    };
+
+    $scope.savedatasystem = function() {
+        $http.post("datasystem", $scope.datasystem).then(function() {
+            updatedatasystems();
         });
     };
 
@@ -82,6 +113,30 @@ app.controller("mboncontroller", function($scope, $http) {
         });
     };
 
+    $scope.deleterequirement = function(id) {
+        $http.delete("requirement/" + id).then(function() {
+            updaterequirements();
+        });
+    };
+
+    $scope.deletetool = function(id) {
+        $http.delete("tool/" + id).then(function() {
+            updatetools();
+        });
+    };
+
+    $scope.deletedataproduct = function(id) {
+        $http.delete("dataproduct/" + id).then(function() {
+            updatedataproducts();
+        });
+    };
+
+    $scope.deletedatasystem = function(id) {
+        $http.delete("datasystem/" + id).then(function() {
+            updatedatasystems();
+        });
+    };
+
     var updatenetworks = function() {
         $http.get("network").success(function(response) {
             $scope.networks = response;
@@ -97,6 +152,18 @@ app.controller("mboncontroller", function($scope, $http) {
     var updatetools = function() {
         $http.get("tool").success(function(response) {
             $scope.tools = response;
+        });
+    };
+
+    var updatedataproducts = function() {
+        $http.get("dataproduct").success(function(response) {
+            $scope.dataproducts = response;
+        });
+    };
+
+    var updatedatasystems = function() {
+        $http.get("datasystem").success(function(response) {
+            $scope.datasystems = response;
         });
     };
 
@@ -118,20 +185,36 @@ app.controller("mboncontroller", function($scope, $http) {
         });
     };
 
+    var updaterequirements = function() {
+        $http.get("requirement").success(function(response) {
+            $scope.requirements = response;
+        });
+    };
+
     $scope.addtool = function() {
         $scope.activity.tools.push($scope.temp.tool);
+    };
+
+    $scope.adddataproduct = function() {
+        $scope.activity.dataproducts.push($scope.temp.dataproduct);
     };
 
     $scope.addquestion = function() {
         $scope.eov.questions.push($scope.temp.question);
     };
 
+    $scope.addrequirement = function() {
+        $scope.eov.requirements.push($scope.temp.requirement);
+    };
+
     updatenetworks();
     updateeovs();
     updatetools();
+    updatedataproducts();
     updateparents();
     updateactivities();
     updatequestions();
+    updaterequirements();
 
 });
 
@@ -178,19 +261,50 @@ app.controller("mapcontroller", function($scope, $http, $timeout, $document) {
 
 app.controller("graphcontroller", function($scope, $http, $timeout, $document) {
 
+    $scope.groups = ["eov", "question", "activity", "network", "tool", "dataproduct", "datasystem", "requirement"];
+    /*$scope.status = [
+        {
+            name: "eov",
+            checked: true
+        },
+        {
+            name: "question",
+            checked: true
+        },
+        {
+            name: "activity",
+            checked: true
+        },
+        {
+            name: "network",
+            checked: true
+        },
+        {
+            name: "tool",
+            checked: true
+        },
+        {
+            name: "dataproduct",
+            checked: true
+        },
+        {
+            name: "requirement",
+            checked: true
+        }
+    ];*/
+
     var creategraph = function(data) {
 
         var nodes = [];
         var nodenames = [];
         var registry = {};
         var edges = [];
-        var groups = ["question", "eov", "activity", "network", "tool"];
 
         var addprop = function(row, key) {
             if (row.hasOwnProperty(key) && row[key] != null && row[key] != "") {
                 if (nodenames.indexOf(row[key]) < 0) {
                     nodenames.push(row[key]);
-                    nodes.push({ name: row[key], group: groups.indexOf(key) });
+                    nodes.push({ name: row[key], group: $scope.groups.indexOf(key) });
                 }
             }
         };
@@ -213,18 +327,21 @@ app.controller("graphcontroller", function($scope, $http, $timeout, $document) {
 
             // add strings to arrays
 
-            addprop(row, "question");
-            addprop(row, "eov");
-            addprop(row, "activity");
-            addprop(row, "network");
-            addprop(row, "tool");
+            for (var g = 0; g < $scope.groups.length; g++) {
+                //if ($scope.status[g].checked == true) {
+                    addprop(row, $scope.groups[g]);
+                //}
+            }
 
             // extract relationships
 
             addrelationship(row, "question", "eov");
+            addrelationship(row, "requirement", "eov");
             addrelationship(row, "eov", "activity");
             addrelationship(row, "activity", "network");
             addrelationship(row, "activity", "tool");
+            addrelationship(row, "activity", "dataproduct");
+            addrelationship(row, "activity", "datasystem");
 
         }
 
@@ -234,28 +351,32 @@ app.controller("graphcontroller", function($scope, $http, $timeout, $document) {
 
     var updategraph = function() {
         $http.get("graphdata").success(function(response) {
-            var graph = creategraph(response);
-            drawgraph(graph);
+            $scope.graph = creategraph(response);
+            $scope.drawgraph();
         });
     };
 
-    var drawgraph = function(graph) {
+    $scope.drawgraph = function() {
 
-        console.log(graph);
+        var graph = $scope.graph;
 
-        var width = 960,
-        height = 500;
+        var el = d3.select("#graph");
+        var width = el.style("width").replace("px", "");
+        var height = el.style("height").replace("px", "");
+
+        el.selectAll("svg").remove();
+
+        var svg = el.append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
         var color = d3.scale.category20();
+        var colors = d3.scale.category20().range();
 
         var force = d3.layout.force()
             .charge(-120)
             .linkDistance(30)
             .size([width, height]);
-
-        var svg = d3.select("#graph").append("svg")
-            .attr("width", width)
-            .attr("height", height);
 
         force
             .nodes(graph.nodes)
@@ -268,30 +389,41 @@ app.controller("graphcontroller", function($scope, $http, $timeout, $document) {
             .attr("class", "link")
             .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
+        var tip = d3.tip()
+            .attr("class", "d3-tip")
+            .offset([-1, 0])
+            .html(function (d) {
+                if ($scope.groups[d.group] == "network" || $scope.groups[d.group] == "tool" || $scope.groups[d.group] == "question" || $scope.groups[d.group] == "dataproduct" || $scope.groups[d.group] == "datasystem" || $scope.groups[d.group] == "requirement") {
+                    return d.name + "";
+                } else if ($scope.groups[d.group] == "activity") {
+                    return "Activity " + d.name;
+                }
+            });
+
         var node = svg.selectAll(".node")
             .data(graph.nodes)
             .enter().append("g")
             .attr("class", "node")
-            .call(force.drag);
+            .call(force.drag)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         node.append("circle")
             .attr("class", "node")
             .attr("r", 5)
-            .style("fill", function(d) { return color(d.group); });
+            .style("fill", function(d) {
+                return colors[d.group];
+            });
 
         node.append("text")
             .attr("dx", 12)
-            .attr("dy", ".35em")
+            .attr("dy", 4)
             .text(function(d) {
-                if (d.group == 1) {
+                if ($scope.groups[d.group] == "eov") {
                     return d.name;
                 }
-            });
-
-        node.append("title")
-            .text(function(d) {
-                return d.name;
-            });
+            })
+            .attr("class", "graphlabel");
 
         force.on("tick", function() {
             link.attr("x1", function(d) { return d.source.x; })
@@ -301,6 +433,23 @@ app.controller("graphcontroller", function($scope, $http, $timeout, $document) {
 
             node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
         });
+
+        svg.call(tip);
+
+        var ordinal = d3.scale.category20()
+            .domain($scope.groups);
+
+        svg.append("g")
+            .attr("class", "legendOrdinal")
+            .attr("transform", "translate(20,20)");
+
+        var legendOrdinal = d3.legend.color()
+            .shape("path", d3.svg.symbol().type("circle").size(100)())
+            .shapePadding(10)
+            .scale(ordinal);
+
+        svg.select(".legendOrdinal")
+            .call(legendOrdinal);
 
     };
 
